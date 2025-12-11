@@ -11,4 +11,7 @@ describe("Rank", () => {
   it("should throw an error if the Rank is negative", () => {
     expect(() => Rank(-1)).toThrow("Rank cannot be negative");
   });
+  it("should throw an error if the number is not finite", () => {
+    expect(() => Rank(NaN)).toThrow("Rank must be a positive finite number");
+  });  
 })

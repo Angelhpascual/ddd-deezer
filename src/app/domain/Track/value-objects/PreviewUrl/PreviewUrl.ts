@@ -3,7 +3,8 @@ export interface PreviewUrl {
 }
 
 export const PreviewUrl = (value: string): PreviewUrl => {
-  if (!value.startsWith("http")) {
+  const trimmed = value?.trim();
+  if (!trimmed || !trimmed.startsWith("http")) {
     throw new Error("PreviewUrl must start with http");
   }
   return { value };

@@ -11,4 +11,7 @@ describe("Duration", () => {
   it("should throw an error if the Duration is negative", () => {
     expect(() => Duration(-1)).toThrow("Duration cannot be negative");
   });
+  it("should throw an error if the number is not finite", () => {
+    expect(() => Duration(NaN)).toThrow("Duration must be a positive finite number");
+  });
 });
