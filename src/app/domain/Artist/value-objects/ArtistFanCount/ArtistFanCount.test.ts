@@ -10,4 +10,7 @@ describe("ArtistFanCount", () => {
   it("should throw an error if the ArtistFanCount is negative", () => {
     expect(() => ArtistFanCount(-1)).toThrow("ArtistFanCount cannot be negative");
   });
+  it("should throw an error if the ArtistFanCount is not a finite number", () => {
+    expect(() => ArtistFanCount(NaN)).toThrow("ArtistFanCount must be a positive finite number");
+  });
 });

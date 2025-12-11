@@ -10,4 +10,7 @@ describe("ArtistPicture", () => {
   it("should throw an error if the ArtistPicture is empty", () => {
     expect(() => ArtistPicture("")).toThrow("ArtistPicture cannot be empty");
   });
+  it("should throw an error if the ArtistPicture is not a valid URL", () => {
+    expect(() => ArtistPicture("not a valid URL")).toThrow("ArtistPicture must be a valid URL");
+  });
 });
