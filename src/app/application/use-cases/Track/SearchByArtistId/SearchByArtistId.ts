@@ -3,7 +3,7 @@ import { Track } from "@/app/domain/Track/Track";
 import { TrackRepository } from "@/app/domain/TrackRepository";
 
 export class SearchByArtistId { 
-  private readonly repo: TrackRepository
+  private readonly repo: TrackRepository  
 
   constructor(repo: TrackRepository) {
     this.repo = repo;

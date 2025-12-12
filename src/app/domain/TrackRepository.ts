@@ -7,3 +7,4 @@ export interface TrackRepository {
   search(query: string): Promise<Track[]>
   searchByArtistId(artistId: ArtistId): Promise<Track[]>
 }
+

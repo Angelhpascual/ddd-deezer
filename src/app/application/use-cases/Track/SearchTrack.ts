@@ -9,6 +9,7 @@ export class SearchTrack {
   }
 
   async execute(query: string): Promise<Track[]> {
-    return this.repo.search(query);
+    if (!query.trim()) return []
+    return this.repo.search(query)
   }
 }
