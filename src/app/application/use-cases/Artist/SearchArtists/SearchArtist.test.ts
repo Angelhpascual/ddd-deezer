@@ -12,7 +12,7 @@ export class SearchArtistTest implements ArtistRepository{
   async getById(): Promise<Artist | null> {
     return null;
   }
-  async search(query: string): Promise<Artist[]> {
+  async search(): Promise<Artist[]> {
     return [{
       id: ArtistId("123"),
       name: ArtistName("John Doe"),
@@ -27,7 +27,7 @@ describe("SearchArtist", () => {
   it("should search for artists", async () => {
     const artistRepository = new SearchArtistTest();
     const searchArtist = new SearchArtist(artistRepository);
-    const artists = await searchArtist.execute("John Doe");
+    const artists: Artist[] = await searchArtist.execute("John Doe");
     expect(artists).toBeDefined();
     expect(artists?.length).toStrictEqual(1);
   });
