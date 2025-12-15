@@ -10,7 +10,7 @@ export interface Track {
   title: Title;
   artistId: ArtistId;
   duration: Duration;
-  previewUrl?: PreviewUrl;
+  previewUrl?: PreviewUrl | undefined;
   explicit: boolean;
-  rank?: Rank;
+  rank?: Rank | undefined;
 }

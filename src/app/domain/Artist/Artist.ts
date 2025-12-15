@@ -7,7 +7,7 @@ import { ArtistPicture } from "./value-objects/ArtistPicture/ArtistPicture"
 export interface Artist { 
   id: ArtistId
   name: ArtistName
-  pictureUrl?: ArtistPicture
-  nbFan?: ArtistFanCount
-  nbAlbum?: ArtistAlbumCount
+  pictureUrl?: ArtistPicture | undefined
+  nbFan?: ArtistFanCount | undefined
+  nbAlbum?: ArtistAlbumCount  | undefined
 }
