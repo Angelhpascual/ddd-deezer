@@ -10,10 +10,6 @@ export class GetArtistById {
   }
 
   async execute(id: ArtistId): Promise<Artist | null> {
-    const artist = await this.repo.getById(id);
-    if (!artist) {
-      throw new Error("Artist not found");
-    }
-    return artist;
+    return this.repo.getById(id);    
   }
 }
