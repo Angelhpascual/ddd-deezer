@@ -5,11 +5,12 @@ import { TrackId } from "@/app/domain/Track/value-objects/TrackId/TrackId";
 import { toTrack } from "./mappers";
 import { ArtistId } from "@/app/domain/Artist/value-objects/ArtistId/ArtistId";
 
+const BASE_URL = "/deezer";
+
 export class DeezerTrackRepository implements TrackRepository {
   async getById(id: TrackId): Promise<Track | null> {
     try {
-      const trackId = id.getValue();
-      const response = await fetch(`https://api.deezer.com/track/${trackId}`);
+      const response = await fetch(`${BASE_URL}/track/${id.toString()}`);
       if (!response.ok) {
         throw new Error("Failed to fetch track");
       }
@@ -24,7 +25,7 @@ export class DeezerTrackRepository implements TrackRepository {
   async search(query: string): Promise<Track[]> {
     try {
       const response = await fetch(
-        `https://api.deezer.com/search/track?q=${encodeURIComponent(query)}`,
+        `${BASE_URL}/search/track?q=${encodeURIComponent(query)}`,
       );
       if (!response.ok) {
         throw new Error("Failed to fetch tracks");
@@ -40,7 +41,7 @@ export class DeezerTrackRepository implements TrackRepository {
   async searchByArtistId(artistId: ArtistId): Promise<Track[]> {
     try {
       const response = await fetch(
-        `https://api.deezer.com/artist/${artistId.value}/top?limit=50`,
+        `${BASE_URL}/artist/${artistId.value}/top?limit=50`,
       );
       if (!response.ok) {
         throw new Error("Failed to fetch tracks by artist");

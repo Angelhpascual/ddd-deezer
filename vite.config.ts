@@ -5,6 +5,15 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      "/deezer": {
+        target: "https://api.deezer.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/deezer/, ""),
+      },
+    },
+  },
   resolve: {
     alias: { "@": path.resolve(__dirname, "src") },
   },
