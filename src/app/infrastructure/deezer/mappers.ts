@@ -1,4 +1,3 @@
-// ...existing code...
 import type { DeezerTrackDTO, DeezerArtistDTO } from "./dto";
 import type { Track } from "@/app/domain/Track/Track";
 import type { Artist } from "@/app/domain/Artist/Artist";
@@ -13,23 +12,25 @@ import type { ArtistPicture } from "@/app/domain/Artist/value-objects/ArtistPict
 import type { ArtistFanCount } from "@/app/domain/Artist/value-objects/ArtistFanCount/ArtistFanCount";
 import type { ArtistAlbumCount } from "@/app/domain/Artist/value-objects/ArtistAlbumCount/ArtistAlbumCount";
 
-// helpers mínimos que crean objetos literales con la forma de los VOs
-const makeTrackId = (v: string): TrackId => ({ value: v } as TrackId);
-const makeTitle = (v: string): Title => ({ value: v } as Title);
-const makeArtistId = (v: string): ArtistId => ({ value: v } as ArtistId);
-const makeDuration = (v: number): Duration => ({ value: v } as Duration);
-const makePreviewUrl = (v: string): PreviewUrl => ({ value: v } as PreviewUrl);
-const makeRank = (v: number): Rank => ({ value: v } as Rank);
-const makeArtistName = (v: string): ArtistName => ({ value: v } as ArtistName);
-const makeArtistPicture = (v: string): ArtistPicture => ({ value: v } as ArtistPicture);
-const makeArtistFanCount = (v: number): ArtistFanCount => ({ value: v } as ArtistFanCount);
-const makeArtistAlbumCount = (v: number): ArtistAlbumCount => ({ value: v } as ArtistAlbumCount);
+const makeTrackId = (v: string): TrackId => ({ value: v }) as TrackId;
+const makeTitle = (v: string): Title => ({ value: v }) as Title;
+const makeArtistId = (v: string): ArtistId => ({ value: v }) as ArtistId;
+const makeDuration = (v: number): Duration => ({ value: v }) as Duration;
+const makePreviewUrl = (v: string): PreviewUrl => ({ value: v }) as PreviewUrl;
+const makeRank = (v: number): Rank => ({ value: v }) as Rank;
+const makeArtistName = (v: string): ArtistName => ({ value: v }) as ArtistName;
+const makeArtistPicture = (v: string): ArtistPicture =>
+  ({ value: v }) as ArtistPicture;
+const makeArtistFanCount = (v: number): ArtistFanCount =>
+  ({ value: v }) as ArtistFanCount;
+const makeArtistAlbumCount = (v: number): ArtistAlbumCount =>
+  ({ value: v }) as ArtistAlbumCount;
 
 export const toTrack = (dto: DeezerTrackDTO): Track => {
   return {
     id: makeTrackId(String(dto.id)),
     title: makeTitle(dto.title ?? ""),
-    artistId: makeArtistId(String(dto.artist?.id ?? dto.artist_id ?? "")),
+    artistId: makeArtistId(String(dto.artist?.id ?? "")),
     duration: makeDuration(Number(dto.duration ?? 0)),
     previewUrl: dto.preview ? makePreviewUrl(dto.preview) : undefined,
     explicit: Boolean(dto.explicit_lyrics),
@@ -51,9 +52,12 @@ export const toArtist = (dto: DeezerArtistDTO): Artist => {
     name: makeArtistName(dto.name ?? ""),
     pictureUrl: picture ? makeArtistPicture(picture) : undefined,
     nbFan:
-      typeof dto.nb_fan === "number" ? makeArtistFanCount(dto.nb_fan) : undefined,
+      typeof dto.nb_fan === "number"
+        ? makeArtistFanCount(dto.nb_fan)
+        : undefined,
     nbAlbum:
-      typeof dto.nb_album === "number" ? makeArtistAlbumCount(dto.nb_album) : undefined,
+      typeof dto.nb_album === "number"
+        ? makeArtistAlbumCount(dto.nb_album)
+        : undefined,
   };
 };
-// ...existing code...
