@@ -12,15 +12,33 @@ import { ArtistPicture } from "@/app/domain/Artist/value-objects/ArtistPicture/A
 import { ArtistFanCount } from "@/app/domain/Artist/value-objects/ArtistFanCount/ArtistFanCount";
 import { ArtistAlbumCount } from "@/app/domain/Artist/value-objects/ArtistAlbumCount/ArtistAlbumCount";
 
-export const toTrack = (dto: DeezerTrackDTO): Track => ({
-  id: TrackId.fromString(String(dto.id)),
-  title: Title.fromString(dto.title ?? ""),
-  artistId: ArtistId.fromString(String(dto.artist?.id ?? "")),
-  duration: Duration.fromNumber(Number(dto.duration ?? 0)),
-  previewUrl: dto.preview ? PreviewUrl.fromString(dto.preview) : undefined,
-  explicit: Boolean(dto.explicit_lyrics),
-  rank: typeof dto.rank === "number" ? Rank.fromNumber(dto.rank) : undefined,
-});
+export const toTrack = (dto: DeezerTrackDTO): Track => {
+  if (!dto.id) {
+    throw new Error("Track DTO must have an id");
+  }
+  if (!dto.title) {
+    throw new Error("Track DTO must have a title");
+  }
+  if (!dto.artist || !dto.artist.id) {
+    throw new Error("Track DTO must have an artist with an id");
+  }
+  if (typeof dto.duration !== "number") {
+    throw new Error("Track DTO must have a duration");
+  }
+
+  const rank =
+    typeof dto.rank === "number" ? Rank.fromNumber(dto.rank) : undefined;
+
+  return {
+    id: TrackId.fromString(dto.id.toString()),
+    title: Title.fromString(dto.title),
+    artistId: ArtistId.fromString(dto.artist.id.toString()),
+    duration: Duration.fromNumber(dto.duration),
+    previewUrl: dto.preview ? PreviewUrl.fromString(dto.preview) : undefined,
+    explicit: Boolean(dto.explicit_lyrics),
+    rank: rank,
+  };
+};
 
 export const toArtist = (dto: DeezerArtistDTO): Artist => {
   const picture =
@@ -42,8 +60,8 @@ export const toArtist = (dto: DeezerArtistDTO): Artist => {
       ? ArtistAlbumCount.fromNumber(dto.nb_album)
       : undefined;
   return {
-    id: ArtistId.fromString(String(dto.id)),
-    name: ArtistName.fromString(dto.name ?? ""),
+    id: ArtistId.fromString(dto.id.toString()),
+    name: ArtistName.fromString(dto.name),
     pictureUrl: pictureUrl,
     nbFan: nbFan,
     nbAlbum: nbAlbum,
