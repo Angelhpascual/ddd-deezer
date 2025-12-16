@@ -9,41 +9,46 @@ describe("DeezerTrackRepository", () => {
     repository = new DeezerTrackRepository();
     vi.clearAllMocks();
   });
-  
+
   describe("getById", () => {
     it("should return a track when fetch is successful", async () => {
-      const trackId = { value: "456" } as TrackId;
+      const trackId = new TrackId("456");
       const mockData = {
         id: 456,
         title: "Test Track",
         duration: 240,
         artist: {
           id: 123,
-          name: "Test Artist"
+          name: "Test Artist",
         },
         album: {
           id: 789,
           title: "Test Album",
-          cover: "http://example.com/cover.jpg"
-        }
-      }
+          cover: "http://example.com/cover.jpg",
+        },
+      };
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: async () => mockData
+        json: async () => mockData,
       });
       const result = await repository.getById(trackId);
       expect(result).not.toBeNull();
-      expect(global.fetch).toHaveBeenCalledWith("https://api.deezer.com/track/456");
-    }      
-    );
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.deezer.com/track/456",
+      );
+    });
     it("should return null when fetch fails", async () => {
-      const trackId = { value: "456" } as TrackId;
+      const trackId = new TrackId("456");
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
       });
-      const result = await repository.getById(trackId);    
+      const result = await repository.getById(trackId);
+      console.log(result);
       expect(result).toBeNull();
-      expect(global.fetch).toHaveBeenCalledWith("https://api.deezer.com/track/456");
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.deezer.com/track/456",
+      );
     });
   });
 });

@@ -1,6 +1,6 @@
-import { beforeEach, describe,  expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DeezerArtistRepository } from "../DeezerArtistRepository";
-import  { ArtistId } from "@/app/domain/Artist/value-objects/ArtistId/ArtistId";
+import { ArtistId } from "@/app/domain/Artist/value-objects/ArtistId/ArtistId";
 
 describe("DeezerArtistRepository", () => {
   let repository = new DeezerArtistRepository();
@@ -12,31 +12,34 @@ describe("DeezerArtistRepository", () => {
 
   describe("getById", () => {
     it("should return an artist when fetch is succesful", async () => {
-      const artistId = {value: "123"} as ArtistId;
+      const artistId = new ArtistId("123");
       const mockData = {
         id: 123,
         name: "Test Artist",
         picture: "http://example.com/picture.jpg",
         nb_fan: 1000,
-        nb_album: 10
-      }
+        nb_album: 10,
+      };
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: async () => mockData
-      }
-      );
+        json: async () => mockData,
+      });
       const result = await repository.getById(artistId);
-      expect(result).not.toBeNull()
-      expect(global.fetch).toHaveBeenCalledWith("https://api.deezer.com/artist/123")
-    })  
+      expect(result).not.toBeNull();
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.deezer.com/artist/123",
+      );
+    });
     it("should return null when fetch fails", async () => {
-      const artistId = {value: "123"} as ArtistId;
+      const artistId = new ArtistId("123");
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
       });
-      const result = await repository.getById(artistId);    
+      const result = await repository.getById(artistId);
       expect(result).toBeNull();
-      expect(global.fetch).toHaveBeenCalledWith("https://api.deezer.com/artist/123")
-    })
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.deezer.com/artist/123",
+      );
+    });
   });
 });
