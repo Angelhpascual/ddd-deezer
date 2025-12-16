@@ -10,6 +10,13 @@ export class Duration {
     }
     this.value = value;
   }
+
+  static fromNumber(value: number): Duration {
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error("Duration must be a non-negative finite number");
+    }
+    return new Duration(value);
+  }
   getValue(): number {
     return this.value;
   }

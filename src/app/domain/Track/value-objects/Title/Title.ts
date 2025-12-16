@@ -11,6 +11,14 @@ export class Title {
     this.value = value;
   }
 
+  static fromString(value: string): Title {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      throw new Error("Title cannot be empty");
+    }
+    return new Title(trimmed);
+  }
+
   getValue(): string {
     return this.value;
   }

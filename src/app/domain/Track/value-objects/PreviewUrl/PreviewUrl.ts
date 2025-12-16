@@ -10,6 +10,14 @@ export class PreviewUrl {
     this.value = value;
   }
 
+  static fromString(value: string): PreviewUrl {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      throw new Error("PreviewUrl cannot be empty");
+    }
+    return new PreviewUrl(trimmed);
+  }
+
   getValue(): string {
     return this.value;
   }

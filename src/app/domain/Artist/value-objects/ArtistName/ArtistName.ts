@@ -7,6 +7,14 @@ export class ArtistName {
     }
     this.value = value;
   }
+
+  static fromString(value: string): ArtistName {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      throw new Error("ArtistName cannot be empty");
+    }
+    return new ArtistName(trimmed);
+  }
   getValue(): string {
     return this.value;
   }
