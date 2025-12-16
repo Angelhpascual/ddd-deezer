@@ -9,11 +9,9 @@ describe("Rank", () => {
   });
 
   it("should throw an error if the Rank is negative", () => {
-    expect(() => new Rank(-1)).toThrow("must be at least 1");
+    expect(() => new Rank(-1)).toThrow("Rank cannot be negative");
   });
   it("should throw an error if the number is not finite", () => {
-    expect(() => new Rank(NaN)).toThrow(
-      "Rank must be a positive finite number",
-    );
+    expect(() => new Rank(NaN)).toThrow("Rank must be a finite number");
   });
 });

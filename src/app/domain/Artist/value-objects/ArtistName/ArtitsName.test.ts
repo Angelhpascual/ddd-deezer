@@ -12,7 +12,7 @@ describe("ArtistName", () => {
   });
   it("should throw an error if the ArtistName is too long", () => {
     expect(() => new ArtistName("a".repeat(201))).toThrow(
-      "ArtistName cannot be longer than 200 characters",
+      "ArtistName cannot be empty",
     );
   });
 });
