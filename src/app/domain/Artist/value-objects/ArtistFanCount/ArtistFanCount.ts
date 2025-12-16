@@ -1,13 +1,25 @@
-export interface ArtistFanCount {
-  value: number
-}
+export class ArtistFanCount {
+  private readonly value: number;
 
-export const ArtistFanCount = (value: number): ArtistFanCount => {
-  if (value < 0) {
-    throw new Error("ArtistFanCount cannot be negative")
+  constructor(value: number) {
+    this.value = value;
   }
-  if(!Number.isFinite(value)) {
-    throw new Error("ArtistFanCount must be a positive finite number")
+
+  static fromNumber(value: number): ArtistFanCount {
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error("ArtistFanCount must be a non-negative finite number");
+    }
+    if (value < 0) {
+      throw new Error("ArtistFanCount cannot be negative");
+    }
+    return new ArtistFanCount(value);
   }
-  return { value }
+
+  getValue(): number {
+    return this.value;
+  }
+
+  toString(): string {
+    return this.value.toString();
+  }
 }

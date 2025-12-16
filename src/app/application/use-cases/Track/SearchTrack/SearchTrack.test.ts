@@ -9,24 +9,26 @@ import { TrackRepository } from "@/app/domain/TrackRepository";
 import { describe, expect, it } from "vitest";
 import { SearchTrack } from "./SearchTrack";
 
-class TrackRepositoryMock implements TrackRepository { 
+class TrackRepositoryMock implements TrackRepository {
   async getById(): Promise<Track | null> {
     return null;
   }
   async search(): Promise<Track[]> {
-    return [{ 
-      id: TrackId("123"),
-      title: Title("Song Title"),
-      artistId: ArtistId("123"),
-      duration: Duration(120),
-      previewUrl: PreviewUrl("https://www.youtube.com/watch?v=123"),
-      explicit: false,
-      rank: Rank(1),
-    }]
+    return [
+      {
+        id: new TrackId("123"),
+        title: new Title("Song Title"),
+        artistId: new ArtistId("123"),
+        duration: new Duration(120),
+        previewUrl: new PreviewUrl("https://www.youtube.com/watch?v=123"),
+        explicit: false,
+        rank: new Rank(1),
+      },
+    ];
   }
   async searchByArtistId(): Promise<Track[]> {
     return [];
-  }  
+  }
 }
 
 describe("SearchTrack", () => {

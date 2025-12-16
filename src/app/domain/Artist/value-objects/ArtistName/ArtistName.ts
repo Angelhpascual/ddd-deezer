@@ -1,14 +1,18 @@
-export interface ArtistName {
-  value: string
-}
+export class ArtistName {
+  private readonly value: string;
 
-export const ArtistName = (value: string, max = 200): ArtistName => {
-  const trimmed = value?.trim()
-  if (!trimmed) {
-    throw new Error("ArtistName cannot be empty")
+  constructor(value: string) {
+    if (!value || value.trim() === "") {
+      throw new Error("ArtistName cannot be empty");
+    }
+    this.value = value;
   }
-  if (trimmed.length > max) {
-    throw new Error(`ArtistName cannot be longer than ${max} characters`)
+
+  getValue(): string {
+    return this.value;
   }
-  return { value: trimmed }
+
+  toString(): string {
+    return this.value;
+  }
 }

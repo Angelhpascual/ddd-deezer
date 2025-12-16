@@ -1,4 +1,3 @@
-
 import { describe, expect, it } from "vitest";
 import { GetTrackById } from "./GetTrackById";
 import { TrackId } from "@/app/domain/Track/value-objects/TrackId/TrackId";
@@ -10,18 +9,17 @@ import { ArtistId } from "@/app/domain/Artist/value-objects/ArtistId/ArtistId";
 import { PreviewUrl } from "@/app/domain/Track/value-objects/PreviewUrl/PreviewUrl";
 import { Track } from "@/app/domain/Track/Track";
 
-
-class TrackRepositoryMock implements TrackRepository { 
+class TrackRepositoryMock implements TrackRepository {
   async getById(id: TrackId): Promise<Track | null> {
     return {
       id,
-      title: Title("Song Title"),
-      artistId: ArtistId("123"),
-      duration: Duration(120),
-      previewUrl: PreviewUrl("https://www.youtube.com/watch?v=123"),
+      title: new Title("Song Title"),
+      artistId: new ArtistId("123"),
+      duration: new Duration(120),
+      previewUrl: new PreviewUrl("https://www.youtube.com/watch?v=123"),
       explicit: false,
-      rank: Rank(1),
-    }
+      rank: new Rank(1),
+    };
   }
   async search(): Promise<Track[]> {
     return [];
@@ -32,14 +30,14 @@ class TrackRepositoryMock implements TrackRepository {
 }
 
 describe("GetTrackById", () => {
-  it("should get a track by id",async () => {
+  it("should get a track by id", async () => {
     const trackRepository = new TrackRepositoryMock();
 
     const getTrackById = new GetTrackById(trackRepository);
 
-    const track = await getTrackById.execute(TrackId("123"));
+    const track = await getTrackById.execute(new TrackId("123"));
 
     expect(track).toBeDefined();
-    expect(track?.id.value).toBe("123");
+    expect(track?.id.getValue()).toBe("123");
   });
 });

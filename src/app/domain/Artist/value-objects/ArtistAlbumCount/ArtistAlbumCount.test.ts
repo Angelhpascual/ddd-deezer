@@ -3,14 +3,18 @@ import { ArtistAlbumCount } from "./ArtistAlbumCount";
 
 describe("ArtistAlbumCount", () => {
   it("should create a valid ArtistAlbumCount", () => {
-    const artistAlbumCount = ArtistAlbumCount(100);
+    const artistAlbumCount = new ArtistAlbumCount(100);
     expect(artistAlbumCount).toBeDefined();
     expect(artistAlbumCount.value).toBe(100);
   });
   it("should throw an error if the ArtistAlbumCount is negative", () => {
-    expect(() => ArtistAlbumCount(-1)).toThrow("ArtistAlbumCount cannot be negative");
+    expect(() => new ArtistAlbumCount(-1)).toThrow(
+      "ArtistAlbumCount cannot be negative",
+    );
   });
   it("should throw an error if the ArtistAlbumCount is not a finite number", () => {
-    expect(() => ArtistAlbumCount(NaN)).toThrow("ArtistAlbumCount must be a positive finite number");
+    expect(() => new ArtistAlbumCount(NaN)).toThrow(
+      "ArtistAlbumCount must be a positive finite number",
+    );
   });
 });

@@ -1,14 +1,21 @@
-export interface Title {
-  value: string;
-}
+export class Title {
+  private readonly value: string;
 
-export const Title = (value: string, max = 200): Title => {
-  const trimmed = value?.trim();
-  if (!trimmed) {
-    throw new Error("Title cannot be empty");
+  constructor(value: string) {
+    if (value.length > 200) {
+      throw new Error("Title cannot be longer than 200 characters");
+    }
+    if (!value || value.trim() === "") {
+      throw new Error("Title cannot be empty");
+    }
+    this.value = value;
   }
-  if (trimmed.length > max) {
-    throw new Error(`Title cannot be longer than ${max} characters`);
+
+  getValue(): string {
+    return this.value;
   }
-  return { value: trimmed };
-};
+
+  toString(): string {
+    return this.value;
+  }
+}

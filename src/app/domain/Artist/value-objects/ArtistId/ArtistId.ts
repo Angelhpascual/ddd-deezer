@@ -1,11 +1,16 @@
-export interface ArtistId {
-  value: string
-}
+export class ArtistId {
+  readonly value: string;
 
-export const ArtistId = (value: string): ArtistId => {
-  const trimmed = value?.trim()
-  if (!trimmed) {
-    throw new Error("ArtistId cannot be empty")
+  constructor(value: string) {
+    if (!value || value.trim() === "") {
+      throw new Error("ArtistId cannot be empty");
+    }
+    this.value = value;
   }
-  return { value: trimmed }
+  getValue(): string {
+    return this.value;
+  }
+  toString(): string {
+    return this.value;
+  }
 }

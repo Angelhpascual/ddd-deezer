@@ -6,20 +6,22 @@ import { SearchArtist } from "./SearchArtist";
 import { ArtistName } from "@/app/domain/Artist/value-objects/ArtistName/ArtistName";
 import { ArtistPicture } from "@/app/domain/Artist/value-objects/ArtistPicture/ArtistPicture";
 import { ArtistFanCount } from "@/app/domain/Artist/value-objects/ArtistFanCount/ArtistFanCount";
-import { ArtistAlbumCount } from "@/app/domain/Artist/value-objects/ArtistAlbumCount/ArtistAlbumCount"; 
+import { ArtistAlbumCount } from "@/app/domain/Artist/value-objects/ArtistAlbumCount/ArtistAlbumCount";
 
-export class SearchArtistTest implements ArtistRepository{
+export class SearchArtistTest implements ArtistRepository {
   async getById(): Promise<Artist | null> {
     return null;
   }
   async search(): Promise<Artist[]> {
-    return [{
-      id: ArtistId("123"),
-      name: ArtistName("John Doe"),
-      pictureUrl: ArtistPicture("https://example.com/picture.jpg"),
-      nbFan: ArtistFanCount(100),
-      nbAlbum: ArtistAlbumCount(10),
-    }]
+    return [
+      {
+        id: new ArtistId("123"),
+        name: new ArtistName("John Doe"),
+        pictureUrl: new ArtistPicture("https://example.com/picture.jpg"),
+        nbFan: ArtistFanCount.fromNumber(100),
+        nbAlbum: ArtistAlbumCount.fromNumber(10),
+      },
+    ];
   }
 }
 

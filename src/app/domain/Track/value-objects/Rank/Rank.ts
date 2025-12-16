@@ -1,13 +1,18 @@
-export interface Rank {
-  value: number;
-}
+export class Rank {
+  readonly value: number;
 
-export const Rank = (value: number): Rank => {
-  if (value < 0 ) {
-    throw new Error("Rank cannot be negative");
+  constructor(value: number) {
+    if (value < 1) {
+      throw new Error("Rank must be at least 1");
+    }
+    this.value = value;
   }
-  if (!Number.isFinite(value)) {
-    throw new Error("Rank must be a positive finite number");
+
+  getValue(): number {
+    return this.value;
   }
-  return { value };
-};
+
+  toString(): string {
+    return this.value.toString();
+  }
+}

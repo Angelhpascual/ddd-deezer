@@ -1,13 +1,19 @@
-export interface Duration {
-  value: number;
-}
+export class Duration {
+  readonly value: number;
 
-export const Duration = (value: number): Duration => {
-  if (!Number.isFinite(value)) {
-    throw new Error("Duration must be a positive finite number");
+  constructor(value: number) {
+    if (!Number.isFinite(value)) {
+      throw new Error("Duration must be a finite number");
+    }
+    if (value < 0) {
+      throw new Error("Duration cannot be negative");
+    }
+    this.value = value;
   }
-  if (value < 0) {
-    throw new Error("Duration cannot be negative");
+  getValue(): number {
+    return this.value;
   }
-  return { value };
-};
+  toString(): string {
+    return this.value.toString();
+  }
+}
