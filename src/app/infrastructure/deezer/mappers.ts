@@ -22,10 +22,30 @@ export const toTrack = (dto: DeezerTrackDTO): Track => ({
   rank: typeof dto.rank === "number" ? Rank.fromNumber(dto.rank) : undefined,
 });
 
-export const toArtist = (dto: DeezerArtistDTO): Artist => ({
-  id: ArtistId.fromString(String(dto.id)),
-  name: ArtistName.fromString(dto.name ?? ""),
-  pictureUrl: ArtistPicture.fromString(dto.picture_medium ?? ""),
-  nbFan: ArtistFanCount.fromNumber(dto.nb_fan ?? 0),
-  nbAlbum: ArtistAlbumCount.fromNumber(dto.nb_album ?? 0),
-});
+export const toArtist = (dto: DeezerArtistDTO): Artist => {
+  const picture =
+    dto.picture ||
+    dto.picture_small ||
+    dto.picture_medium ||
+    dto.picture_big ||
+    dto.picture_xl;
+
+  const pictureUrl = picture ? ArtistPicture.fromString(picture) : undefined;
+
+  const nbFan =
+    typeof dto.nb_fan === "number"
+      ? ArtistFanCount.fromNumber(dto.nb_fan)
+      : undefined;
+
+  const nbAlbum =
+    typeof dto.nb_album === "number"
+      ? ArtistAlbumCount.fromNumber(dto.nb_album)
+      : undefined;
+  return {
+    id: ArtistId.fromString(String(dto.id)),
+    name: ArtistName.fromString(dto.name ?? ""),
+    pictureUrl: pictureUrl,
+    nbFan: nbFan,
+    nbAlbum: nbAlbum,
+  };
+};
