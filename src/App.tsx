@@ -20,6 +20,8 @@ function App() {
   const highlightArtist = trendingArtists;
   const top5Tracks = trendingTracks.slice(0, 5);
 
+  console.log({ top5Tracks });
+
   console.log({ trendingTracks });
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -48,9 +50,6 @@ function App() {
                 <h3 className="mt-2 text-lg font-semibold">
                   {track.title.toString()}
                 </h3>
-                <p className="text-sm text-slate-400">
-                  {track.artistId.toString()}
-                </p>
                 <p className="mt-3 text-sm text-slate-400">
                   {track.duration.value}s
                 </p>

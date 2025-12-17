@@ -26,6 +26,8 @@ export const HeroSection = ({
     onSearchTracks(term);
   };
 
+  console.log({ highlightTrack });
+
   return (
     <section className="rounded-3xl bg-linear-to-br from-indigo-500 via-purple-500 to-fuchsia-500 p-8 text-white shadow-[0_10px_60px_-15px_rgba(139,92,246,0.7)]">
       <header className="flex flex-wrap items-center gap-6">
@@ -105,7 +107,7 @@ export const HeroSection = ({
                       {track.title.toString()}
                     </p>
                     <p className="text-xs text-white/70">
-                      {track.artistId.toString()}
+                      Rank:{track.rank?.toString()}
                     </p>
                   </div>
                 </li>
