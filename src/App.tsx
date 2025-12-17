@@ -18,6 +18,9 @@ function App() {
     useTrendingArtist();
 
   const highlightArtist = trendingArtists;
+  const top5Tracks = trendingTracks.slice(0, 5);
+
+  console.log({ trendingTracks });
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-6xl px-4 pt-6 pb-16">
@@ -27,6 +30,7 @@ function App() {
           highlightArtist={highlightArtist ?? null}
           trendingTrackLoading={trendingTrackLoading}
           trendingArtistLoading={trendingArtistsLoading}
+          top5Tracks={top5Tracks}
         />
 
         {isPending && <p className="mt-8 text-slate-400">Buscando...</p>}

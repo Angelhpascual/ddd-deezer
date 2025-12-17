@@ -29,6 +29,13 @@ export const toTrack = (dto: DeezerTrackDTO): Track => {
   const rank =
     typeof dto.rank === "number" ? Rank.fromNumber(dto.rank) : undefined;
 
+  const cover =
+    dto.album?.cover_xl ||
+    dto.album?.cover_big ||
+    dto.album?.cover_medium ||
+    dto.album?.cover_small ||
+    null;
+
   return {
     id: TrackId.fromString(dto.id.toString()),
     title: Title.fromString(dto.title),
@@ -37,6 +44,7 @@ export const toTrack = (dto: DeezerTrackDTO): Track => {
     previewUrl: dto.preview ? PreviewUrl.fromString(dto.preview) : undefined,
     explicit: Boolean(dto.explicit_lyrics),
     rank: rank,
+    coverUrl: cover,
   };
 };
 

@@ -8,6 +8,7 @@ type HeroSectionProps = {
   trendingTrackLoading: boolean;
   trendingArtistLoading: boolean;
   highlightArtist?: Artist | null;
+  top5Tracks?: Track[];
 };
 
 export const HeroSection = ({
@@ -16,6 +17,7 @@ export const HeroSection = ({
   trendingTrackLoading,
   trendingArtistLoading,
   highlightArtist,
+  top5Tracks = [],
 }: HeroSectionProps) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -71,34 +73,48 @@ export const HeroSection = ({
         <article className="rounded-2xl bg-white/15 p-4 backdrop-blur">
           <p className="text-xs text-white/60 uppercase">Top Chart</p>
           {trendingTrackLoading ? (
-            <div className="mt-4 h-6 w-32 animate-pulse rounded bg-white/30" />
-          ) : highlightTrack ? (
-            <>
-              <h3 className="mt-2 text-xl font-semibold">
-                {highlightTrack.title.toString()}
-              </h3>
-              <p className="text-sm text-white/70">
-                {highlightTrack.artistId.toString()}
-              </p>
-              {highlightTrack.previewUrl ? (
-                <div className="mt-4 rounded-2xl bg-white/20 p-3 text-white">
-                  <p className="text-xs text-white/70 uppercase">
-                    Escuchar avance
-                  </p>
-                  <audio
-                    controls
-                    src={highlightTrack.previewUrl.toString()}
-                    className="mt-2 w-full"
-                  />
-                </div>
-              ) : (
-                <p className="mt-4 text-sm text-white/70">
-                  No hay preview disponible.
-                </p>
-              )}
-            </>
+            <div className="mt-4 space-y-3">
+              {[...Array(3)].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="h-10 animate-pulse rounded bg-white/20"
+                />
+              ))}
+            </div>
+          ) : top5Tracks.length ? (
+            <ul className="mt-4 space-y-4">
+              {top5Tracks.map((track, index) => (
+                <li
+                  key={track.id.toString()}
+                  className="flex items-center gap-3"
+                >
+                  <span className="text-2xl font-bold text-white/40">
+                    #{index + 1}
+                  </span>
+                  {track.coverUrl ? (
+                    <img
+                      src={track.coverUrl}
+                      alt={track.title.toString()}
+                      className="h-12 w-12 rounded-lg object-cover"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 rounded-lg bg-white/20" />
+                  )}
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold">
+                      {track.title.toString()}
+                    </p>
+                    <p className="text-xs text-white/70">
+                      {track.artistId.toString()}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           ) : (
-            <p className="text-sm text-white/70">No hay datos disponibles</p>
+            <p className="mt-4 text-sm text-white/70">
+              No hay datos disponibles
+            </p>
           )}
         </article>
         <article className="flex flex-col items-center justify-center rounded-2xl bg-white/15 p-4 backdrop-blur">
