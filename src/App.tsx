@@ -19,10 +19,7 @@ function App() {
 
   const highlightArtist = trendingArtists;
   const top5Tracks = trendingTracks.slice(0, 5);
-
-  console.log({ top5Tracks });
-
-  console.log({ trendingTracks });
+  console.log({ searchTracks });
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-6xl px-4 pt-6 pb-16">
@@ -50,8 +47,17 @@ function App() {
                 <h3 className="mt-2 text-lg font-semibold">
                   {track.title.toString()}
                 </h3>
+                {track.coverUrl ? (
+                  <img
+                    src={track.coverUrl}
+                    alt={track.title.toString()}
+                    className="mt-3 h-40 w-full rounded-lg object-contain"
+                  />
+                ) : (
+                  <div className="mt-3 h-40 w-full rounded-lg bg-slate-700" />
+                )}
                 <p className="mt-3 text-sm text-slate-400">
-                  {track.duration.value}s
+                  Duration: {track.duration.format()}
                 </p>
                 {track.previewUrl && (
                   <audio
