@@ -53,4 +53,18 @@ export class DeezerTrackRepository implements TrackRepository {
       return [];
     }
   }
+
+  async getTopTracks(): Promise<Track[]> {
+    try {
+      const response = await fetch(`${BASE_URL}/chart/0/tracks`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch top tracks");
+      }
+      const data: SearchResponseDTO<DeezerTrackDTO> = await response.json();
+      return data.data.map(toTrack);
+    } catch (error) {
+      console.error("Failed to fetch top tracks", error);
+      return [];
+    }
+  }
 }

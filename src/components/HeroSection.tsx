@@ -1,10 +1,22 @@
+import { Artist } from "@/app/domain/Artist/Artist";
+import { Track } from "@/app/domain/Track/Track";
 import { FormEvent } from "react";
 
 type HeroSectionProps = {
   onSearchTracks: (query: string) => void;
+  highlightTrack: Track;
+  trendingTrackLoading: boolean;
+  trendingArtistLoading: boolean;
+  highlightArtist?: Artist | null;
 };
 
-export const HeroSection = ({ onSearchTracks }: HeroSectionProps) => {
+export const HeroSection = ({
+  onSearchTracks,
+  highlightTrack,
+  trendingTrackLoading,
+  trendingArtistLoading,
+  highlightArtist,
+}: HeroSectionProps) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const term = String(new FormData(event.currentTarget).get("query") || "");
@@ -58,13 +70,62 @@ export const HeroSection = ({ onSearchTracks }: HeroSectionProps) => {
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <article className="rounded-2xl bg-white/15 p-4 backdrop-blur">
           <p className="text-xs text-white/60 uppercase">Top Chart</p>
-          <h3 className="mt-2 text-xl font-semibold">Midnight Echoes</h3>
-          <p className="text-sm text-white/70">Nova Pulse • 2.3M plays</p>
+          {trendingTrackLoading ? (
+            <div className="mt-4 h-6 w-32 animate-pulse rounded bg-white/30" />
+          ) : highlightTrack ? (
+            <>
+              <h3 className="mt-2 text-xl font-semibold">
+                {highlightTrack.title.toString()}
+              </h3>
+              <p className="text-sm text-white/70">
+                {highlightTrack.artistId.toString()}
+              </p>
+              {highlightTrack.previewUrl ? (
+                <div className="mt-4 rounded-2xl bg-white/20 p-3 text-white">
+                  <p className="text-xs text-white/70 uppercase">
+                    Escuchar avance
+                  </p>
+                  <audio
+                    controls
+                    src={highlightTrack.previewUrl.toString()}
+                    className="mt-2 w-full"
+                  />
+                </div>
+              ) : (
+                <p className="mt-4 text-sm text-white/70">
+                  No hay preview disponible.
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-white/70">No hay datos disponibles</p>
+          )}
         </article>
-        <article className="rounded-2xl bg-white/15 p-4 backdrop-blur">
-          <p className="text-xs text-white/60 uppercase">Trending Artist</p>
-          <h3 className="mt-2 text-xl font-semibold">Luna Coast</h3>
-          <p className="text-sm text-white/70">+320K fans esta semana</p>
+        <article className="flex flex-col items-center justify-center rounded-2xl bg-white/15 p-4 backdrop-blur">
+          <p className="mb-4 text-xs text-white/60 uppercase">
+            Trending Artist
+          </p>
+          {trendingArtistLoading ? (
+            <div className="mt-4 h-6 w-32 animate-pulse rounded bg-white/30" />
+          ) : highlightArtist ? (
+            <>
+              <img
+                className="rounded-full"
+                src={highlightArtist.pictureUrl?.toString() || ""}
+                alt=""
+              />
+              <h3 className="mt-2 text-xl font-semibold">
+                {highlightArtist.name.toString()}
+              </h3>
+              <p className="text-sm text-white/70">
+                {highlightArtist.nbFan
+                  ? `${highlightArtist.nbFan.getValue().toLocaleString()} fans`
+                  : "Fans desconocidos"}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-white/70">No hay artistas disponibles</p>
+          )}
         </article>
       </div>
     </section>

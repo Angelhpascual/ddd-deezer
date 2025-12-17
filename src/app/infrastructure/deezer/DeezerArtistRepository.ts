@@ -4,10 +4,12 @@ import { toArtist } from "./mappers";
 import { ArtistId } from "@/app/domain/Artist/value-objects/ArtistId/ArtistId";
 import { DeezerArtistDTO, SearchResponseDTO } from "./dto";
 
+const BASE_URL = "/deezer";
+
 export class DeezerArtistRepository implements ArtistRepository {
   async getById(id: ArtistId): Promise<Artist | null> {
     try {
-      const response = await fetch(`https://api.deezer.com/artist/${id.value}`);
+      const response = await fetch(`${BASE_URL}/artist/${id.value}`);
       if (!response.ok) {
         throw new Error("Failed to fetch artist");
       }
@@ -20,7 +22,9 @@ export class DeezerArtistRepository implements ArtistRepository {
   }
   async search(query: string): Promise<Artist[]> {
     try {
-      const response = await fetch(`https://api.deezer.com/search/artist?q=${encodeURIComponent(query)}`);
+      const response = await fetch(
+        `${BASE_URL}/search/artist?q=${encodeURIComponent(query)}`,
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch artists");
       }
@@ -30,5 +34,19 @@ export class DeezerArtistRepository implements ArtistRepository {
       console.error("Failed to fetch artists", error);
       return [];
     }
-  }  
+  }
+
+  async getTopArtist(): Promise<Artist[]> {
+    try {
+      const response = await fetch(`${BASE_URL}/chart/0/artists`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch top artists");
+      }
+      const data: SearchResponseDTO<DeezerArtistDTO> = await response.json();
+      return data.data.map(toArtist);
+    } catch (error) {
+      console.error("Failed to fetch top artists", error);
+      return [];
+    }
+  }
 }

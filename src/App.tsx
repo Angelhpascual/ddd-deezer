@@ -1,5 +1,7 @@
 import { HeroSection } from "./components/HeroSection";
 import { useSearchTracks } from "./hooks/useSearchTracks";
+import { useTrendingArtist } from "./hooks/useTrendingArtist";
+import { useTrendingTracks } from "./hooks/useTrendingTracks";
 
 function App() {
   const {
@@ -9,10 +11,23 @@ function App() {
     error,
   } = useSearchTracks();
 
+  const { data: trendingTracks = [], isLoading: trendingTrackLoading } =
+    useTrendingTracks();
+
+  const { data: trendingArtists, isLoading: trendingArtistsLoading } =
+    useTrendingArtist();
+
+  const highlightArtist = trendingArtists;
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-6xl px-4 pt-6 pb-16">
-        <HeroSection onSearchTracks={(term) => searchTracks(term)} />
+        <HeroSection
+          onSearchTracks={(term) => searchTracks(term)}
+          highlightTrack={trendingTracks[0]}
+          highlightArtist={highlightArtist ?? null}
+          trendingTrackLoading={trendingTrackLoading}
+          trendingArtistLoading={trendingArtistsLoading}
+        />
 
         {isPending && <p className="mt-8 text-slate-400">Buscando...</p>}
         {error && <p className="mt-8 text-rose-400">Error: {error.message}</p>}
