@@ -38,7 +38,26 @@ function App() {
           onSelectedCategory={setCategory}
         />
 
-        {isPending && <p className="mt-8 text-slate-400">Buscando...</p>}
+        {isPending && (
+          <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, idx) => (
+              <article
+                key={idx}
+                className="animate-pulse rounded-2xl bg-slate-900/40 p-4"
+              >
+                <div className="h-3 w-16 rounded bg-slate-800" />
+
+                <div className="mt-2 h-6 w-3/4 rounded bg-slate-800" />
+
+                <div className="mt-3 h-40 w-full rounded-lg bg-slate-800" />
+
+                <div className="mt-3 h-4 w-24 rounded bg-slate-800" />
+
+                <div className="mt-3 h-10 w-full rounded-full bg-slate-800" />
+              </article>
+            ))}
+          </section>
+        )}
         {error && <p className="mt-8 text-rose-400">Error: {error.message}</p>}
         {trackResults && (
           <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">

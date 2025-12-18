@@ -64,7 +64,6 @@ export const HeroSection = ({
 
       <div className="mt-8 flex flex-wrap gap-3 text-sm">
         {["Top Global", "Fresh Releases", "Mood Booster"].map((chip, index) => {
-          // Mapeamos el índice del array visual a tus IDs del dominio
           const categoryIds: TrendingCategory[] = [
             "topGlobal",
             "freshReleases",
@@ -79,8 +78,8 @@ export const HeroSection = ({
               onClick={() => onSelectedCategory(currentId)}
               className={`rounded-full px-4 py-1 transition-colors ${
                 isSelected
-                  ? "bg-white font-semibold text-indigo-600 shadow-sm" // Activo
-                  : "bg-white/20 text-white/90 hover:bg-white/30" // Inactivo
+                  ? "bg-white font-semibold text-indigo-600 shadow-sm"
+                  : "bg-white/20 text-white/90 hover:bg-white/30"
               }`}
             >
               {chip}
