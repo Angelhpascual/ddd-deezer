@@ -1,6 +1,6 @@
 export interface DeezerTrackDTO {
   id: number;
-  title: string; 
+  title: string;
   duration: number;
   preview?: string;
   explicit_lyrics: boolean;
@@ -8,18 +8,22 @@ export interface DeezerTrackDTO {
   artist: {
     id: number;
     name: string;
-    
-  }
-  album?:{
+  };
+  album?: {
     id: number;
-    title: string
-  }
+    title: string;
+    cover?: string;
+    cover_small?: string;
+    cover_medium?: string;
+    cover_big?: string;
+    cover_xl?: string;
+  };
 }
 
 export interface DeezerArtistDTO {
   id: number;
   name: string;
-  picture?: string
+  picture?: string;
   picture_small?: string;
   picture_medium?: string;
   picture_big?: string;
@@ -28,12 +32,11 @@ export interface DeezerArtistDTO {
   nb_album?: number;
 }
 
-export interface SearchResponseDTO<T>{
+export interface SearchResponseDTO<T> {
   data: T[];
-  total?: number
-  next?: string
+  total?: number;
+  next?: string;
 }
 
-
-export interface ArtistResponseDTO extends DeezerArtistDTO { }
-export interface TrackResponseDTO extends DeezerTrackDTO { }
+export interface ArtistResponseDTO extends DeezerArtistDTO {}
+export interface TrackResponseDTO extends DeezerTrackDTO {}

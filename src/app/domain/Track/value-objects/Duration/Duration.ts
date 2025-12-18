@@ -23,4 +23,10 @@ export class Duration {
   toString(): string {
     return this.value.toString();
   }
+
+  format(): string {
+    const minutes = Math.floor(this.value / 60);
+    const seconds = this.value % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  }
 }

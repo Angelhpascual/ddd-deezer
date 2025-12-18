@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { HeroSection } from "./components/HeroSection";
 import { useSearchTracks } from "./hooks/useSearchTracks";
+import { useTrendingArtist } from "./hooks/useTrendingArtist";
+import { useTrendingTracks } from "./hooks/useTrendingTracks";
+import { TrendingCategory } from "./app/domain/TrackRepository";
 
 function App() {
   const {
@@ -9,12 +13,51 @@ function App() {
     error,
   } = useSearchTracks();
 
+  const [category, setCategory] = useState<TrendingCategory>("topGlobal");
+
+  const { data: trendingArtists, isLoading: trendingArtistsLoading } =
+    useTrendingArtist();
+
+  const { data: trendingTracks = [], isLoading: trendingTrackLoading } =
+    useTrendingTracks(category);
+
+  const highlightArtist = trendingArtists;
+  const top5Tracks = trendingTracks.slice(0, 5);
+  console.log({ searchTracks });
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-6xl px-4 pt-6 pb-16">
-        <HeroSection onSearchTracks={(term) => searchTracks(term)} />
+        <HeroSection
+          onSearchTracks={(term) => searchTracks(term)}
+          highlightTrack={trendingTracks[0]}
+          highlightArtist={highlightArtist ?? null}
+          trendingTrackLoading={trendingTrackLoading}
+          trendingArtistLoading={trendingArtistsLoading}
+          top5Tracks={top5Tracks}
+          selectedCategory={category}
+          onSelectedCategory={setCategory}
+        />
 
-        {isPending && <p className="mt-8 text-slate-400">Buscando...</p>}
+        {isPending && (
+          <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, idx) => (
+              <article
+                key={idx}
+                className="animate-pulse rounded-2xl bg-slate-900/40 p-4"
+              >
+                <div className="h-3 w-16 rounded bg-slate-800" />
+
+                <div className="mt-2 h-6 w-3/4 rounded bg-slate-800" />
+
+                <div className="mt-3 h-40 w-full rounded-lg bg-slate-800" />
+
+                <div className="mt-3 h-4 w-24 rounded bg-slate-800" />
+
+                <div className="mt-3 h-10 w-full rounded-full bg-slate-800" />
+              </article>
+            ))}
+          </section>
+        )}
         {error && <p className="mt-8 text-rose-400">Error: {error.message}</p>}
         {trackResults && (
           <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -29,11 +72,17 @@ function App() {
                 <h3 className="mt-2 text-lg font-semibold">
                   {track.title.toString()}
                 </h3>
-                <p className="text-sm text-slate-400">
-                  {track.artistId.toString()}
-                </p>
+                {track.coverUrl ? (
+                  <img
+                    src={track.coverUrl}
+                    alt={track.title.toString()}
+                    className="mt-3 h-40 w-full rounded-lg object-contain"
+                  />
+                ) : (
+                  <div className="mt-3 h-40 w-full rounded-lg bg-slate-700" />
+                )}
                 <p className="mt-3 text-sm text-slate-400">
-                  {track.duration.value}s
+                  Duration: {track.duration.format()}
                 </p>
                 {track.previewUrl && (
                   <audio

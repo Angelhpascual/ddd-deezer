@@ -13,4 +13,5 @@ export interface Track {
   previewUrl?: PreviewUrl | undefined;
   explicit: boolean;
   rank?: Rank | undefined;
+  coverUrl?: string | null;
 }
