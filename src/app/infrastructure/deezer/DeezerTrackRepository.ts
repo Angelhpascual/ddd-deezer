@@ -1,6 +1,9 @@
 import { Track } from "@/app/domain/Track/Track";
 import { DeezerTrackDTO, SearchResponseDTO } from "./dto";
-import { TrackRepository } from "@/app/domain/TrackRepository";
+import {
+  TrackRepository,
+  TrendingCategory,
+} from "@/app/domain/TrackRepository";
 import { TrackId } from "@/app/domain/Track/value-objects/TrackId/TrackId";
 import { toTrack } from "./mappers";
 import { ArtistId } from "@/app/domain/Artist/value-objects/ArtistId/ArtistId";
@@ -54,16 +57,37 @@ export class DeezerTrackRepository implements TrackRepository {
     }
   }
 
-  async getTopTracks(): Promise<Track[]> {
+  // async getTopTracks(): Promise<Track[]> {
+  //   try {
+  //     const response = await fetch(`${BASE_URL}/chart/0/tracks`);
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch top tracks");
+  //     }
+  //     const data: SearchResponseDTO<DeezerTrackDTO> = await response.json();
+  //     return data.data.map(toTrack);
+  //   } catch (error) {
+  //     console.error("Failed to fetch top tracks", error);
+  //     return [];
+  //   }
+  // }
+
+  async getTrendingTracks(category: TrendingCategory): Promise<Track[]> {
+    const chartMap: Record<TrendingCategory, string> = {
+      topGlobal: "0",
+      freshReleases: "132",
+      moodBooster: "113",
+    };
+
+    const chartId = chartMap[category];
     try {
-      const response = await fetch(`${BASE_URL}/chart/0/tracks`);
+      const response = await fetch(`${BASE_URL}/chart/${chartId}/tracks`);
       if (!response.ok) {
-        throw new Error("Failed to fetch top tracks");
+        throw new Error("Failed to fetch trending tracks");
       }
       const data: SearchResponseDTO<DeezerTrackDTO> = await response.json();
       return data.data.map(toTrack);
     } catch (error) {
-      console.error("Failed to fetch top tracks", error);
+      console.error("Failed to fetch trending tracks", error);
       return [];
     }
   }

@@ -1,5 +1,6 @@
 import { Artist } from "@/app/domain/Artist/Artist";
 import { Track } from "@/app/domain/Track/Track";
+import { TrendingCategory } from "@/app/domain/TrackRepository";
 import { FormEvent } from "react";
 
 type HeroSectionProps = {
@@ -9,11 +10,14 @@ type HeroSectionProps = {
   trendingArtistLoading: boolean;
   highlightArtist?: Artist | null;
   top5Tracks?: Track[];
+  selectedCategory: TrendingCategory;
+  onSelectedCategory: (category: TrendingCategory) => void;
 };
 
 export const HeroSection = ({
   onSearchTracks,
-  highlightTrack,
+  selectedCategory,
+  onSelectedCategory,
   trendingTrackLoading,
   trendingArtistLoading,
   highlightArtist,
@@ -25,8 +29,6 @@ export const HeroSection = ({
     if (!term.trim()) return;
     onSearchTracks(term);
   };
-
-  console.log({ highlightTrack });
 
   return (
     <section className="rounded-3xl bg-linear-to-br from-indigo-500 via-purple-500 to-fuchsia-500 p-8 text-white shadow-[0_10px_60px_-15px_rgba(139,92,246,0.7)]">
@@ -61,14 +63,30 @@ export const HeroSection = ({
       </header>
 
       <div className="mt-8 flex flex-wrap gap-3 text-sm">
-        {["Top Global", "Fresh Releases", "Mood Booster"].map((chip) => (
-          <span
-            key={chip}
-            className="rounded-full bg-white/20 px-4 py-1 text-white/90"
-          >
-            {chip}
-          </span>
-        ))}
+        {["Top Global", "Fresh Releases", "Mood Booster"].map((chip, index) => {
+          // Mapeamos el índice del array visual a tus IDs del dominio
+          const categoryIds: TrendingCategory[] = [
+            "topGlobal",
+            "freshReleases",
+            "moodBooster",
+          ];
+          const currentId = categoryIds[index];
+          const isSelected = selectedCategory === currentId;
+          return (
+            <button
+              key={chip}
+              type="button"
+              onClick={() => onSelectedCategory(currentId)}
+              className={`rounded-full px-4 py-1 transition-colors ${
+                isSelected
+                  ? "bg-white font-semibold text-indigo-600 shadow-sm" // Activo
+                  : "bg-white/20 text-white/90 hover:bg-white/30" // Inactivo
+              }`}
+            >
+              {chip}
+            </button>
+          );
+        })}
       </div>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">

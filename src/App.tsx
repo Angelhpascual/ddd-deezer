@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { HeroSection } from "./components/HeroSection";
 import { useSearchTracks } from "./hooks/useSearchTracks";
 import { useTrendingArtist } from "./hooks/useTrendingArtist";
 import { useTrendingTracks } from "./hooks/useTrendingTracks";
+import { TrendingCategory } from "./app/domain/TrackRepository";
 
 function App() {
   const {
@@ -11,11 +13,13 @@ function App() {
     error,
   } = useSearchTracks();
 
-  const { data: trendingTracks = [], isLoading: trendingTrackLoading } =
-    useTrendingTracks();
+  const [category, setCategory] = useState<TrendingCategory>("topGlobal");
 
   const { data: trendingArtists, isLoading: trendingArtistsLoading } =
     useTrendingArtist();
+
+  const { data: trendingTracks = [], isLoading: trendingTrackLoading } =
+    useTrendingTracks(category);
 
   const highlightArtist = trendingArtists;
   const top5Tracks = trendingTracks.slice(0, 5);
@@ -30,6 +34,8 @@ function App() {
           trendingTrackLoading={trendingTrackLoading}
           trendingArtistLoading={trendingArtistsLoading}
           top5Tracks={top5Tracks}
+          selectedCategory={category}
+          onSelectedCategory={setCategory}
         />
 
         {isPending && <p className="mt-8 text-slate-400">Buscando...</p>}
