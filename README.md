@@ -1,73 +1,86 @@
-# React + TypeScript + Vite
+# 🎵 DDD Deezer Music App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A professional music discovery application built with **React**, **TypeScript**, and **Domain-Driven Design (DDD)** principles.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Trending Music**: Real-time access to Deezer's top charts filtering by categories:
+  - 🌍 **Top Global**: The most played tracks worldwide.
+  - 🚀 **Fresh Releases**: New popular hits.
+  - 🕺 **Mood Booster**: Energetic tracks to lift your spirit.
+- **Search Engine**: Instant search for tracks and artists.
+- **Audio Previews**: Play 30-second snippets of any track directly from the UI.
+- **Modern UI**: Polished interface with Tailwind CSS, Skeleton loading states, and responsive design.
 
-## React Compiler
+## 🏗️ Architecture
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project strictly follows **Domain-Driven Design** to ensure scalability and maintainability.
 
-## Expanding the ESLint configuration
+### Layers
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1.  **Domain (`src/app/domain`)**:
+    - The heart of the application. Contains business logic, Entities (Track, Artist), Value Objects (TrackId, Duration, etc.), and Repository Interfaces.
+    - _Dependency Rule_: This layer depends on NOTHING.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2.  **Application (`src/hooks`)**:
+    - Orchestrates data flow. Uses React Query hooks (`useTrendingTracks`, `useSearchTracks`) to connect the UI with the Domain/Infrastructure.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3.  **Infrastructure (`src/app/infrastructure`)**:
+    - Implements the contracts defined in the Domain.
+    - Connects to the external Deezer API (via proxy) and maps raw JSON to Domain Entities.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+4.  **UI (`src/components`, `App.tsx`)**:
+    - Pure React components. "Dumb" components (like `HeroSection`) receive data via props and emit events, delegating logic to the container (`App`).
+
+## 🛠️ Tech Stack
+
+- **Core**: React 18, TypeScript, Vite.
+- **State/Async**: TanStack Query (React Query).
+- **Styling**: Tailwind CSS.
+- **Testing**: Vitest, React Testing Library.
+
+## 📂 Project Structure
+
+```
+src/
+├── app/
+│   ├── domain/           # Business logic & Types
+│   └── infrastructure/   # API implementations
+├── components/           # UI Components (Hero, etc.)
+├── hooks/                # Application logic (React Query)
+├── App.tsx               # Main Composition Root
+└── main.tsx              # Entry Point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚦 Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1.  **Install dependencies**:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+    ```bash
+    npm install
+    ```
+
+2.  **Run development server**:
+
+    ```bash
+    npm run dev
+    ```
+
+    _Note: The project uses a Vite proxy to handle CORS with the Deezer API._
+
+3.  **Run Tests**:
+    ```bash
+    npm run test
+    ```
+
+## 🧪 Testing
+
+The project follows a comprehensive testing strategy:
+
+- **Unit Tests**: Verify Infrastructure logic (Repositories).
+- **Component Tests**: Verify UI interactions and accessibility.
+- **Integration Tests**: Verify the full user flow in `App.tsx`.
+
+---
+
+Built strictly following Clean Architecture principles.
